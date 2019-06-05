@@ -26,14 +26,22 @@ def handle(msg):
 			f'https://www.dreamanimes.com.br/online/legendado/kimetsu-no-yaiba/episodio/{kimetsu_id}')
 
 		if kimetsu.status_code == 200:
-			telegram_bot.sendMessage(chat_id, f'Saiu ep novo de Kimetsu no Yaiba! EP {kimetsu_id}.')
+			telegram_bot.sendMessage(chat_id,
+									 f'Saiu ep novo de Kimetsu no Yaiba! EP {kimetsu_id}.'
+									 f'Assista o novo episódio lançado em:\n'
+									 f'https://www.dreamanimes.com.br/online/legendado/kimetsu-no-yaiba/'
+									 f'episodio/{kimetsu_id}')
 			print(f'Saiu ep novo de Kimetsu no Yaiba! EP {kimetsu_id}.')
 			data['kimetsu'] += 1
 
 			with open('data.json', 'w') as f:
 				json.dump(data, f, sort_keys=False, indent=4)
 		else:
-			telegram_bot.sendMessage(chat_id, 'Ainda não saiu ep novo de Kimetsu no Yaiba.')
+			telegram_bot.sendMessage(chat_id,
+									 'Ainda não saiu ep novo de Kimetsu no Yaiba.\n'
+									 'Assista o ultimo episódio lançado em:\n'
+									 f'https://www.dreamanimes.com.br/online/legendado/kimetsu-no-yaiba/'
+									 f'episodio/{int(kimetsu_id)-1}')
 			print('Ainda não saiu ep novo de Kimetsu no Yaiba.')
 
 	if command == '/opm':
@@ -44,29 +52,49 @@ def handle(msg):
 			opm = requests.head(f'https://myanimesonline.net/episodios/one-punch-man-2-episodio-{opm_id}/')
 
 		if opm.status_code == 200:
-			telegram_bot.sendMessage(chat_id, f'Saiu ep novo de One Punch Man! EP {opm_id}.')
+			telegram_bot.sendMessage(chat_id,
+									 f'Saiu ep novo de One Punch Man! EP {opm_id}.\n'
+									 f'Assista o novo episódio em:\n'
+									 f'https://myanimesonline.net/episodios/one-punch-man-2-episodio-{opm_id}/')
 			print(f'Saiu ep novo de One Punch Man! EP {opm_id}.')
 			data['opm'] += 1
 
 			with open('data.json', 'w') as f:
 				json.dump(data, f, sort_keys=False, indent=4)
 		else:
-			telegram_bot.sendMessage(chat_id, 'Ainda não saiu ep novo de One Punch Man.')
-			print('Ainda não saiu ep novo de One Punch Man.')
+
+			if int(opm_id) < 10:
+				telegram_bot.sendMessage(chat_id,
+										 'Ainda não saiu ep novo de One Punch Man.\n'
+										 'Assista o ultimo episódio em:\n'
+										 f'https://myanimesonline.net/'
+										 f'episodios/one-punch-man-2-episodio-{int(opm_id) - 1}/')
+			else:
+				telegram_bot.sendMessage(chat_id,
+										'Ainda não saiu ep novo de One Punch Man.\n'
+										'Assista o ultimo episódio em:\n'
+										f'https://myanimesonline.net/'
+										f'episodios/one-punch-man-2-episodio-0{int(opm_id)-1}/')
+				print('Ainda não saiu ep novo de One Punch Man.')
 
 	if command == '/dororo':
 		dororo_id = str(data['dororo'])
 		dororo = requests.head(f'https://ww4.animesonline.online/video/dororo-episodio-{dororo_id}/')
 
 		if dororo.status_code == 200:
-			telegram_bot.sendMessage(chat_id, f'Saiu ep novo de Dororo! EP {dororo_id}.')
+			telegram_bot.sendMessage(chat_id, f'Saiu ep novo de Dororo! EP {dororo_id}.\n'
+			f'Assista o novo episódio em:\n'
+			f'https://ww4.animesonline.online/video/dororo-episodio-{dororo_id}/')
 			print(f'Saiu ep novo de Dororo! EP {dororo_id}.')
 			data['dororo'] += 1
 
 			with open('data.json', 'w') as f:
 				json.dump(data, f, sort_keys=False, indent=4)
 		else:
-			telegram_bot.sendMessage(chat_id, 'Ainda não saiu ep novo de Dororo.')
+			telegram_bot.sendMessage(chat_id,
+									 'Ainda não saiu ep novo de Dororo.\n'
+									 'Assista o ultimo episódio em:\n'
+									 f'https://ww4.animesonline.online/video/dororo-episodio-{int(dororo_id)-1}/')
 			print('Ainda não saiu ep novo de Dororo.')
 
 
